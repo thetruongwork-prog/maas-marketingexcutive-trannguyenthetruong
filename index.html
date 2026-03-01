@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAAS Edtech – Marketing Slides</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --cream: #f7f4ee;
+    --gold: #c8973a;
+    --gold-light: #e8c97a;
+    --muted: #9a9690;
+    --border: rgba(200,151,58,0.25);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#000; font-family:'DM Sans',sans-serif; overflow:hidden; width:100vw; height:100vh; }
+
+  .slider { width:100%; height:100%; position:relative; }
+  .slide {
+    position:absolute; inset:0;
+    background: var(--ink);
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 56px 80px;
+    opacity:0; pointer-events:none;
+    transition: opacity 0.5s ease;
+  }
+  .slide.active { opacity:1; pointer-events:all; }
+  .slide::before { content:''; position:absolute; width:500px; height:500px; border-radius:50%; border:1px solid var(--border); top:-100px; right:-100px; pointer-events:none; }
+  .slide::after  { content:''; position:absolute; width:300px; height:300px; border-radius:50%; border:1px solid rgba(200,151,58,0.1); bottom:-80px; left:60px; pointer-events:none; }
+
+  .label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+  h1 { font-family:'DM Serif Display',serif; font-size:54px; line-height:1.1; color:var(--cream); margin-bottom:16px; }
+  h1 em { color:var(--gold-light); font-style:italic; }
+  h2 { font-family:'DM Serif Display',serif; font-size:38px; line-height:1.15; color:var(--cream); margin-bottom:20px; }
+  h2 em { color:var(--gold-light); font-style:italic; }
+  .subtitle { font-size:15px; color:var(--muted); line-height:1.7; max-width:580px; }
+
+  .meta-row { display:flex; gap:48px; margin-top:40px; padding-top:28px; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; }
+  .meta-item span { display:block; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+  .meta-item strong { font-size:14px; color:var(--cream); font-weight:500; }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .card { background:rgba(255,255,255,0.04); border:1px solid rgba(200,151,58,0.2); border-radius:12px; padding:18px 20px; }
+  .card h4 { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .card p { font-size:13px; color:var(--muted); line-height:1.6; }
+
+  .beats { display:flex; flex-direction:column; gap:10px; }
+  .beat { background:rgba(255,255,255,0.04); border-radius:10px; padding:14px 18px; border-left:3px solid var(--gold); }
+  .beat-time { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+  .beat-action { font-size:12px; color:rgba(247,244,238,0.35); font-style:italic; margin-bottom:4px; }
+  .beat-text { font-size:13px; color:var(--cream); line-height:1.6; }
+  .beat-text strong { color:var(--gold-light); }
+  .beat-text em { color:var(--muted); }
+
+  .captions-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .platform-tag { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; display:block; }
+  .caption-box { background:rgba(255,255,255,0.04); border:1px solid rgba(200,151,58,0.2); border-radius:12px; padding:18px 20px; font-size:12.5px; color:var(--muted); line-height:1.8; }
+  .caption-box p + p { margin-top:6px; }
+  .caption-box strong { color:var(--cream); }
+  .caption-box em { color:rgba(247,244,238,0.6); }
+  .hashtags { color:#5a7ab5; font-size:11.5px; margin-top:8px; }
+
+  .steps-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .step { display:flex; gap:14px; align-items:flex-start; }
+  .step-num { width:30px; height:30px; border-radius:50%; flex-shrink:0; background:var(--gold); color:var(--ink); display:flex; align-items:center; justify-content:center; font-family:'DM Serif Display',serif; font-size:14px; }
+  .step-body h4 { font-size:13px; font-weight:600; color:var(--cream); margin-bottom:2px; }
+  .step-body p { font-size:12px; color:var(--muted); line-height:1.5; }
+
+  .r-blocks { display:flex; flex-direction:column; gap:18px; }
+  .r-block { border-left:2px solid var(--gold); padding-left:18px; }
+  .r-block h4 { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .r-block p { font-size:13.5px; color:var(--muted); line-height:1.7; }
+
+  .nav { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:20px; z-index:100; }
+  .nav button { width:38px; height:38px; border-radius:50%; border:1px solid rgba(200,151,58,0.4); background:rgba(15,14,12,0.8); color:var(--gold); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s; }
+  .nav button:hover { background:rgba(200,151,58,0.15); }
+  .nav button:disabled { opacity:0.3; cursor:default; }
+  .dots { display:flex; gap:8px; }
+  .dot { width:7px; height:7px; border-radius:50%; background:rgba(200,151,58,0.3); cursor:pointer; transition:background 0.2s; }
+  .dot.active { background:var(--gold); }
+  .slide-num { position:fixed; top:24px; right:36px; font-size:11px; letter-spacing:2px; color:var(--muted); z-index:100; }
+</style>
+</head>
+<body>
+<div class="slider">
+
+  <!-- SLIDE 1: COVER -->
+  <div class="slide active">
+    <div class="label">Marketing Executive · Bài Nộp Đánh Giá</div>
+    <h1>1-on-1 Tutoring<br><em>Business &amp; Economics</em><br>Instagram Campaign</h1>
+    <p class="subtitle">Chiến dịch Instagram Reel nhắm đến sinh viên Business &amp; Economics — xây dựng trust và drive conversions cho dịch vụ gia sư 1-1 của MAAS Edtech.</p>
+    <div class="meta-row">
+      <div class="meta-item"><span>Organization</span><strong>MAAS Edtech</strong></div>
+      <div class="meta-item"><span>Submitted By</span><strong>Mr. The Truong</strong></div>
+      <div class="meta-item"><span>Deadline</span><strong>10:00 SA · 03/02/2026</strong></div>
+      <div class="meta-item"><span>Format</span><strong>Instagram Reel / Post</strong></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: CREATIVE CONCEPT -->
+  <div class="slide">
+    <div class="label">Part 1 — Content Package</div>
+    <h2>Creative Concept</h2>
+    <p class="subtitle" style="margin-bottom:20px;"><strong style="color:var(--cream)">"Giảng viên không chờ em. Nhưng MAAS thì có."</strong> — Cấu trúc narrative: Pain → Relate → Resolve → CTA</p>
+    <div class="grid-2">
+      <div class="card"><h4>Format</h4><p>Instagram Reel · Dọc 9:16 · 30–40 giây · Có phụ đề cho người xem không bật âm thanh</p></div>
+      <div class="card"><h4>Tone of Voice</h4><p>Gần gũi, chân thực, kết thúc với hình ảnh chuyên nghiệp — không quá thương mại</p></div>
+      <div class="card"><h4>Hook (0–3s)</h4><p>Chữ in đậm nổi bật trên nền laptop mờ để dừng ngón tay cuộn ngay lập tức</p></div>
+      <div class="card"><h4>Background Music</h4><p>Beat lo-fi học tập đang trending — royalty-free hoặc từ thư viện âm thanh Instagram</p></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: VIDEO SCRIPT -->
+  <div class="slide">
+    <div class="label">Part 1 — Content Package</div>
+    <h2>Video Script <em>~35 giây</em></h2>
+    <div class="beats">
+      <div class="beat">
+        <div class="beat-time">0:00 – 0:04 · HOOK</div>
+        <div class="beat-action">[Cận cảnh: bảng điểm trên màn hình laptop, kết quả thấp hơn kỳ vọng. Chữ lớn hiện ra:]</div>
+        <div class="beat-text"><strong>"Bạn hiểu bài, nhưng điểm số thì không phản ánh đúng?"</strong></div>
+      </div>
+      <div class="beat">
+        <div class="beat-time">0:04 – 0:14 · PAIN</div>
+        <div class="beat-action">[Montage: sinh viên gật đầu khi đọc lý thuyết, nhưng nhìn bài thi trả về với điểm thấp và nhận xét đỏ của giảng viên]</div>
+        <div class="beat-text">Lời thoại: <em>"Phần lớn sinh viên Business &amp; Economics không mất điểm vì thiếu kiến thức — mà vì không có ai chỉnh lại cách tư duy và trình bày bài theo chuẩn đại học."</em></div>
+      </div>
+      <div class="beat">
+        <div class="beat-time">0:14 – 0:26 · RESOLVE</div>
+        <div class="beat-action">[Chuyển cảnh: buổi học 1-1 trực tuyến, tutor đang annotate trực tiếp lên bài viết của sinh viên]</div>
+        <div class="beat-text">Lời thoại: <em>"Dịch vụ 1-on-1 Tutoring của MAAS giúp bạn hiểu đúng – làm đúng – và được chấm đúng."</em> · Text overlay: <strong>Hiểu đúng. Làm đúng. Được chấm đúng.</strong></div>
+      </div>
+      <div class="beat">
+        <div class="beat-time">0:26 – 0:35 · CTA</div>
+        <div class="beat-action">[End card: logo MAAS, nền tối, chữ vàng nổi bật]</div>
+        <div class="beat-text">Lời thoại: <em>"Còn bạn thì sao? Đăng ký học thử MIỄN PHÍ ngay cùng MAAS Edtech tại link bio."</em> · Text overlay: <strong>Nhận tư vấn 1-1 FREE tại link bio 🎓</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: CAPTIONS -->
+  <div class="slide">
+    <div class="label">Part 1 — Content Package</div>
+    <h2>Captions</h2>
+    <div class="captions-grid">
+      <div>
+        <span class="platform-tag">📘 Facebook</span>
+        <div class="caption-box">
+          <p>Bạn hiểu bài — nhưng điểm số lại không phản ánh đúng? 🤔</p>
+          <p>Phần lớn sinh viên Business &amp; Economics không mất điểm vì thiếu kiến thức. Mà vì không có ai chỉnh lại cách tư duy và trình bày bài theo chuẩn đại học.</p>
+          <p>Dịch vụ 1-on-1 Tutoring của MAAS giúp bạn <em>hiểu đúng – làm đúng – được chấm đúng.</em> Với đội ngũ tutor đến từ nhiều trường đại học uy tín, nhiều bạn sinh viên đã thành công chinh phục các điểm số cao.</p>
+          <p>✅ Microeconomics · Macroeconomics · Financial Accounting · MBA<br>✅ Essay · Exam Prep · Case Study · Dissertation<br>✅ Sinh viên RMIT, UEL, BUV và các trường tại UK, US, AUS, NZ</p>
+          <p><strong>👉 Còn bạn thì sao? Nhận tư vấn 1-1 FREE ngay tại link bio.</strong></p>
+          <p class="hashtags">#MAASTutoring #StudySmart #Microeconomics #FinancialAccounting #GiaSu1Kèm1 #RMITVietnam #StudyAbroad #AssignmentHelp #SinhViênKinhTế #AcademicSupport</p>
+        </div>
+      </div>
+      <div>
+        <span class="platform-tag">📸 Instagram</span>
+        <div class="caption-box">
+          <p>Hiểu bài rồi mà điểm vẫn không cao? 🤔</p>
+          <p>Vấn đề không phải kiến thức — mà là cách tư duy và trình bày chưa đúng chuẩn đại học.</p>
+          <p>MAAS 1-on-1 Tutoring giúp bạn <em>hiểu đúng – làm đúng – được chấm đúng.</em></p>
+          <p><strong>👉 Nhận tư vấn 1-1 FREE tại link bio.</strong></p>
+          <p class="hashtags">#MAASTutoring #Microeconomics #FinancialAccounting #GiaSu1Kèm1 #StudySmart #RMITVietnam</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: EXECUTION PROCESS -->
+  <div class="slide">
+    <div class="label">Part 2 — Content Execution Process</div>
+    <h2>Quy Trình Thực Hiện <em>trong 1 ngày</em></h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><h4>Ideation</h4><p>Brainstorm concept dựa trên insight của sinh viên Business &amp; Economics.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><h4>Script — ChatGPT &amp; Claude</h4><p>Finetune ý tưởng và phát triển kịch bản hoàn chỉnh với AI.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><h4>Video Sourcing — Pixabay &amp; Pexels</h4><p>Tìm stock footage miễn phí bản quyền, relatable với sinh viên.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body"><h4>Voiceover — Vibe &amp; Minimax</h4><p>Tạo AI voiceover tự nhiên, gần gũi theo kịch bản.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body"><h4>Editing — CapCut</h4><p>Dựng video, thêm subtitles, text overlays và background music. Export 9:16 chuẩn Reel.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body"><h4>Review &amp; Publish</h4><p>Xem lại trên mobile, publish đồng thời lên Instagram và Facebook.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: STRATEGIC RATIONALE -->
+  <div class="slide">
+    <div class="label">Part 3 — Strategic Rationale</div>
+    <h2>Tại Sao Chọn <em>Hướng Này?</em></h2>
+    <div class="r-blocks">
+      <div class="r-block">
+        <h4>Why this approach?</h4>
+        <p>Tôi chọn đi từ một insight cụ thể hơn: phần lớn sinh viên Business &amp; Economics không tự nhận mình "kém" — nhưng hầu hết đều từng cảm thấy bỏ công học mà điểm vẫn không phản ánh đúng. Đây là nỗi thất vọng thầm lặng mà ít ai nói thẳng ra, nên khi content chạm đúng điểm đó, người xem dễ dừng lại và cảm thấy "cái này đang nói về mình."</p>
+      </div>
+      <div class="r-block">
+        <h4>How does this drive trust &amp; conversions?</h4>
+        <p>Kịch bản không phán xét mà đặt người xem vào vị thế được thấu hiểu trước — giúp giảm cảm giác "đang bị bán hàng" và khiến MAAS trở nên đáng tin hơn. Video dùng stock footage và AI voiceover tự nhiên nên trông như organic content, tăng khả năng xem hết và chia sẻ. Social proof được trình bày theo dạng kể chuyện thay vì con số khô khan — phù hợp với tâm lý của gen Z. CTA "Nhận tư vấn 1-1 FREE" có barrier thấp, không yêu cầu cam kết ngay — đủ để chuyển người xem thành lead cho MAAS.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="slide-num" id="slideNum">1 / 6</div>
+<div class="nav">
+  <button id="prev" disabled>&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button id="next">&#8594;</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const slideNum = document.getElementById('slideNum');
+  let cur = 0;
+
+  slides.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => go(i);
+    dotsEl.appendChild(d);
+  });
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    prev.disabled = cur === 0;
+    next.disabled = cur === slides.length - 1;
+    slideNum.textContent = `${cur+1} / ${slides.length}`;
+  }
+
+  prev.onclick = () => cur > 0 && go(cur-1);
+  next.onclick = () => cur < slides.length-1 && go(cur+1);
+  document.addEventListener('keydown', e => {
+    if (e.key==='ArrowRight' && cur<slides.length-1) go(cur+1);
+    if (e.key==='ArrowLeft' && cur>0) go(cur-1);
+  });
+</script>
+</body>
+</html>
